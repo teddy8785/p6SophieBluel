@@ -17,7 +17,7 @@ function genererPhoto(works) {
         const photoElement = document.createElement("img"); // creation des balises img
         photoElement.src = works[i].imageUrl; // inserer la source l'image
         const textElement = document.createElement("figcaption"); // creation de la balise figcaption
-        textElement.innerText = works[i].title; // inserer la source du texte
+        textElement.textContent = works[i].title; // inserer la source du texte
 
         sectionPortfolio.appendChild(portfolioElement); // inserer les balises figure
         portfolioElement.appendChild(photoElement); // inserer les images
@@ -28,7 +28,6 @@ function genererPhoto(works) {
 /*les boutons du filtres*/
 
 const boutonArray = [];
-const categories = [];
 
 function genererBoutons(works) {
     const boutons = document.querySelector(".filtres"); // conteneur des boutons
@@ -36,7 +35,7 @@ function genererBoutons(works) {
     // utilisation des boutons a l'aide du tableau
     categories.forEach((categorie, index) => {
         const boutonElement = document.createElement("button"); // creation d'un element bouton
-        boutonElement.innerText = categorie; // nommer les boutons avec le nom des categories
+        boutonElement.textContent = categorie; // nommer les boutons avec le nom des categories
         boutonElement.classList.add("btn"); // ajouter la classe btn aux boutons
         if (index === 0) {
             boutonElement.classList.add("btn-selected"); // ajouter la classe btn-selected au premier bouton
@@ -59,7 +58,7 @@ function filtrerPhotos(works, categorie) {
 /* fonction selection */
 function selectBtn(categorie) {
     boutonArray.forEach(bouton => {
-        if (bouton.innerText === categorie) {
+        if (bouton.textContent === categorie) {
             bouton.classList.add("btn-selected");
         } else {
             bouton.classList.remove("btn-selected");
@@ -67,58 +66,63 @@ function selectBtn(categorie) {
     });
 }
 
-// function genererPhoto(works) {
-//     const sectionPortfolio = document.querySelector(".gallery");
-//     sectionPortfolio.innerHTML = ""; // Nettoyer la galerie avant de générer de nouvelles photos
+const login = document.getElementById("login_link");
 
-//     works.forEach(work => {
-//         const portfolioElement = document.createElement("figure");
-//         const photoElement = document.createElement("img");
-//         photoElement.src = work.imageUrl;
-//         const textElement = document.createElement("figcaption");
-//         textElement.innerText = work.title;
+let token = localStorage.getItem('authToken');
+console.log(token);
+if (token) {
+    pageEdition();
+}
 
-//         portfolioElement.appendChild(photoElement);
-//         portfolioElement.appendChild(textElement);
-//         sectionPortfolio.appendChild(portfolioElement);
-//     });
-// }
+login.addEventListener("click", () => {
+    
+    if (token) {
+        localStorage.removeItem("authToken");
+        window.location.href = "./index.html";
+    } else {
+        window.location.href = "./login.html";
+    }
+});
 
-// function genererBoutons(works) {
-//     // Récupérer le conteneur des boutons
-//     const boutons = document.querySelector(".filtres");
+export function pageEdition() {
+    // Vérifier si l'élément avec l'ID 'projects' existe
+    const pageModifier = document.getElementById("projects");
 
-//     // Nettoyer les anciens boutons si la fonction est appelée plusieurs fois
-//     boutons.innerHTML = "";
+    // Création du conteneur pour l'icône et le texte "modifier"
+    const container = document.createElement("div");
+    container.classList.add("divStyle2");
 
-//     // Créer un tableau de catégories uniques, incluant une catégorie 'Tous'
-//     const categories = ["Tous", ...new Set(works.map(works => works.category.name))];
+    // Création de l'icône et du texte "modifier"
+    const icon2 = document.createElement("i");
+    icon2.classList.add("fa-regular", "fa-pen-to-square");
 
-//     // Parcourir les catégories pour créer les boutons
-//     categories.forEach((categorie, index) => {
-//         // Créer un nouvel élément de bouton
-//         const boutonElement = document.createElement("button");
+    const modifier = document.createElement("span");
+    modifier.textContent = "modifier";
 
-//         // Ajouter la classe btn à chaque bouton
-//         boutonElement.classList.add("btn");
+    // Ajout de l'icône et du texte au conteneur
+    container.appendChild(icon2);
+    container.appendChild(modifier);
+    container.style.cursor = 'pointer';
 
-//         // Ajouter la classe btn-selected au premier bouton
-//         if (index === 0) {
-//             boutonElement.classList.add("btn-selected");
-//         }
+    // Ajouter le conteneur à l'élément avec l'ID 'projects'
+    pageModifier.appendChild(container);
 
-//         // Ajouter le texte au bouton
-//         boutonElement.innerText = categorie;
+    // Création de la nouvelle div "mode édition"
+    const newDiv = document.createElement('div');
+    newDiv.classList.add("divStyle");
+    newDiv.textContent = "mode édition";
 
-//         // Ajouter le bouton au conteneur des boutons
-//         boutons.appendChild(boutonElement);
+    // Création de l'icône pour "mode édition"
+    const icon1 = document.createElement("i");
+    icon1.classList.add("fa-regular", "fa-pen-to-square");
+    newDiv.appendChild(icon1);
 
-//         // Ajouter le bouton au tableau boutonArray pour référence
-//         boutonArray.push(boutonElement);
+    // Ajouter la nouvelle div en haut du body de la page
+    document.body.insertBefore(newDiv, document.body.firstChild);
 
-// Ajouter un écouteur d'événement pour filtrer les œuvres par catégorie lors du clic
-//         boutonElement.addEventListener("click", () => {
-//             filtrerPhotos(works, categorie);
-//         });
-//     });
-// }
+    login.textContent = "logout";
+
+    container.addEventListener("click", () => {
+        console.log("ok")
+    });
+}
