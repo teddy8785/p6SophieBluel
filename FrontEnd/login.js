@@ -22,7 +22,7 @@ export function connexionLogin() {
         }
         const data = await response.json();
         const token = data.token;
-        console.log(response);
+
         if (token) {
             localStorage.setItem('authToken', token);
             // Redirection vers la page d'accueil après la connexion
