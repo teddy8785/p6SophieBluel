@@ -24,7 +24,7 @@ export function connexionLogin() {
         const token = data.token;
 
         if (token) {
-            localStorage.setItem('authToken', token);
+            sessionStorage.setItem('authToken', token);
             // Redirection vers la page d'accueil après la connexion
             window.location.href = "./index.html";
         } else {

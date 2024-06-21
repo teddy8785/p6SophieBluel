@@ -8,14 +8,6 @@ fetch("http://localhost:5678/api/works")
         works = data;
         genererPhoto(works);
         genererBoutons(works);
-
-        // Appeler la fonction modal avec les données works lors du clic sur le container
-        const container = document.querySelector("#projects .divStyle2");
-        if (container) {
-            container.addEventListener("click", () => {
-                modal(works);
-            });
-        }
     });
 
 function genererPhoto(works) {
@@ -74,15 +66,15 @@ function selectBtn(categorie) {
 
 const login = document.getElementById("login_link");
 
-let token = localStorage.getItem('authToken');
+let token = sessionStorage.getItem('authToken');
 
 if (token) {
-    pageEdition(works);
+    pageEdition();
 }
 
 login.addEventListener("click", () => {
     if (token) {
-        localStorage.removeItem("authToken");
+        sessionStorage.removeItem("authToken");
         window.location.href = "./index.html";
     } else {
         window.location.href = "./login.html";
@@ -118,4 +110,8 @@ export function pageEdition() {
     document.body.insertBefore(newDiv, document.body.firstChild);
 
     login.textContent = "logout";
+
+    container.addEventListener("click", () => {
+        modal(works);
+    });
 }
