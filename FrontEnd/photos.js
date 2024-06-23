@@ -10,7 +10,7 @@ fetch("http://localhost:5678/api/works")
         genererBoutons(works);
     });
 
-function genererPhoto(works) {
+export function genererPhoto(works) {
     const sectionPortfolio = document.querySelector(".gallery");
     sectionPortfolio.innerHTML = "";
 
@@ -29,7 +29,7 @@ function genererPhoto(works) {
 
 const boutonArray = [];
 
-function genererBoutons(works) {
+export function genererBoutons(works) {
     const boutons = document.querySelector(".filtres");
     const categories = ["Tous", ...new Set(works.map(work => work.category.name))];
 
