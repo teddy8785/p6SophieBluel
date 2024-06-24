@@ -1,4 +1,4 @@
-import { genererBoutons } from "./FrontEnd/photos.js";
+let token = sessionStorage.getItem('authToken');
 
 // Fonction pour créer et afficher le modal de la galerie
 export function modal(works) {
@@ -71,14 +71,36 @@ function genererPhotoDansModal(gallerie, works) {
         gallerie.appendChild(portfolioElement);
 
         // Ajouter un événement pour manipuler l'image lorsqu'on clique sur l'icône de la corbeille
-        trash.addEventListener("click", (event) => {
+        trash.addEventListener("click", async (event) => {
             event.stopPropagation(); // Empêcher la propagation de l'événement si nécessaire
 
             // Supprimer l'élément figure parent de l'icône de la corbeille cliquée
             const figure = trash.closest("figure");
             if (figure) {
-                figure.remove();
+
+                const id = work.id;
+                try {
+                    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        }
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('La connexion a échoué');
+                    }
+    
+                    console.log("Réponse du serveur:", response);
+                    alert("Formulaire soumis avec succès !");
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors de la soumission du formulaire.');
+                }
+            } else {
+                alert("Veuillez remplir tous les champs !");
             }
+                figure.remove();
         });
     });
 }
@@ -146,11 +168,8 @@ export function modal2(works) {
     ajoutPhoto.appendChild(button2);
     ajoutPhoto.appendChild(fileSize);
 
-    // Ajouter le modal au body de la page
-    document.body.appendChild(modal);
-
     // Récupère toutes les catégories uniques
-    const categories = [...new Set(works.map(work => work.category.name))];
+    const categories = ["", ...new Set(works.map(work => work.category.name))];
 
     // Vider les options existantes dans le <select>
     labelContainer2.innerHTML = "";
@@ -163,13 +182,15 @@ export function modal2(works) {
         labelContainer2.appendChild(option); // Ajouter l'option au <select>
     });
 
+ // Ajouter le modal au body de la page
+ document.body.appendChild(modal);
 
     ajouterPhoto();
 
     // changer la couleur du bouton si le champs est rempli
     formContainer.addEventListener("input", () => {
 
-        if (labelContainer1.value != "" && button2.isConnected === false) {
+        if (labelContainer1.value != "" && button2.isConnected === false && labelContainer2.value !== "") {
             button.style.backgroundColor = "#1D6154";
         } else {
             button.style.backgroundColor = "grey";
@@ -244,7 +265,6 @@ function ajouterPhoto() {
         }
     });
 }
-let token = sessionStorage.getItem('authToken');
 
 function validerPhoto() {
     const btnValidate = document.querySelector(".btnValidate");
