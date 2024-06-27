@@ -1,4 +1,4 @@
-import { modal } from "../modal.js";
+import { modal } from "./modal.js";
 
 let works = [];
 
@@ -30,7 +30,7 @@ export function genererPhoto(works) {
 const boutonArray = [];
 
 export function genererBoutons(works) {
-    const boutons = document.querySelector(".filtres");
+    const boutons = document.querySelector(".filters");
     const categories = ["Tous", ...new Set(works.map(work => work.category.name))];
 
     categories.forEach((categorie, index) => {

@@ -8,17 +8,21 @@ export function modal(works) {
 
     const modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
+
     const titre = document.createElement("h1");
     const gallerie = document.createElement("div");
-    const bar = document.createElement("hr");
+    const line = document.createElement("hr");
     const button = document.createElement("button");
     const closeButton = document.createElement("i");
 
     // Définir le contenu
     titre.textContent = "Galerie photo";
     titre.classList.add("title");
+
     gallerie.classList.add("galleryModal");
-    bar.classList.add("bar");
+
+    line.classList.add("line");
+
     button.textContent = "Ajouter une photo";
     button.classList.add("button");
     closeButton.classList.add("modal-close", "fa-solid", "fa-xmark");
@@ -27,7 +31,7 @@ export function modal(works) {
     modal.appendChild(modalContent);
     modalContent.appendChild(titre);
     modalContent.appendChild(gallerie);
-    modalContent.appendChild(bar);
+    modalContent.appendChild(line);
     modalContent.appendChild(button);
     modalContent.appendChild(closeButton);
 
@@ -86,11 +90,11 @@ function genererPhotoDansModal(gallerie, works) {
                             'Authorization': `Bearer ${token}`,
                         }
                     });
-    
+
                     if (!response.ok) {
                         throw new Error('La connexion a échoué');
                     }
-    
+
                     console.log("Réponse du serveur:", response);
                     alert("Formulaire soumis avec succès !");
                 } catch (error) {
@@ -100,7 +104,7 @@ function genererPhotoDansModal(gallerie, works) {
             } else {
                 alert("Veuillez remplir tous les champs !");
             }
-                figure.remove();
+            figure.remove();
         });
     });
 }
@@ -124,32 +128,49 @@ export function modal2(works) {
     const label2 = document.createElement("label");
     const labelContainer2 = document.createElement("select");
 
-    const bar = document.createElement("hr");
+    const line = document.createElement("hr");
     const button = document.createElement("button");
     const image = document.createElement("i");
     const button2 = document.createElement("button");
     const fileSize = document.createElement("p");
 
     // Définir le contenu
+    formContainer.classList.add("formContainer");
+
     returnButton.classList.add("modal-return", "fa-solid", "fa-arrow-left");
     closeButton.classList.add("modal-close", "fa-solid", "fa-xmark");
+
     title.textContent = "Ajout photo";
     title.classList.add("title");
+
     ajoutPhoto.classList.add("ajoutPhoto");
+
     image.classList.add("fa-regular", "fa-image", "image");
+
     button2.textContent = "+ Ajouter photo";
     button2.classList.add("button2");
+    button2.id = "button2";
+
     fileSize.textContent = "jpg,png : 4mo max";
     fileSize.style.fontSize = "12px";
     fileSize.id = "info";
-    formContainer.classList.add("formContainer");
+
+
     label1.textContent = "Titre";
     labelContainer1.classList.add("input");
+    labelContainer1.id = "labelContainer1";
+
+
+
     label2.textContent = "Categorie";
     labelContainer2.classList.add("input");
-    bar.classList.add("bar");
+    labelContainer2.id = "labelContainer2";
+
+    line.classList.add("line");
+
     button.textContent = "Valider";
     button.classList.add("button", "btnValidate");
+    button.id = "button";
 
     // Ajouter les éléments au modal
     modal.appendChild(modalContent);
@@ -162,7 +183,7 @@ export function modal2(works) {
     formContainer.appendChild(labelContainer1);
     formContainer.appendChild(label2);
     formContainer.appendChild(labelContainer2);
-    formContainer.appendChild(bar);
+    formContainer.appendChild(line);
     formContainer.appendChild(button);
     ajoutPhoto.appendChild(image);
     ajoutPhoto.appendChild(button2);
@@ -182,18 +203,16 @@ export function modal2(works) {
         labelContainer2.appendChild(option); // Ajouter l'option au <select>
     });
 
- // Ajouter le modal au body de la page
- document.body.appendChild(modal);
+    // Ajouter le modal au body de la page
+    document.body.appendChild(modal);
 
     ajouterPhoto();
 
     // changer la couleur du bouton si le champs est rempli
-    formContainer.addEventListener("input", () => {
-
-        if (labelContainer1.value != "" && button2.isConnected === false && labelContainer2.value !== "") {
-            button.style.backgroundColor = "#1D6154";
-        } else {
-            button.style.backgroundColor = "grey";
+    formContainer.addEventListener("input", (event) => {
+        console.log(event.target)
+        if ( button2.isConnected === false) {// 
+           validateForm();
         }
     });
 
@@ -258,6 +277,7 @@ function ajouterPhoto() {
                 };
                 reader.readAsDataURL(file); // Lire le fichier comme une URL de données
                 fileInput.id = "fileInput";
+                validateForm();
                 validerPhoto();
             }
         } else {
@@ -266,6 +286,17 @@ function ajouterPhoto() {
     });
 }
 
+function validateForm() {
+    const labelContainer1 = document.getElementById("labelContainer1");
+    const labelContainer2 = document.getElementById("labelContainer2");
+    const button = document.getElementById("button");
+
+    if (labelContainer1.value != "" && labelContainer2.value !== "") {
+        button.style.backgroundColor = "#1D6154";
+    } else {
+        button.style.backgroundColor = "grey";
+    }
+}
 function validerPhoto() {
     const btnValidate = document.querySelector(".btnValidate");
     const fileInput = document.getElementById("fileInput");
@@ -276,7 +307,7 @@ function validerPhoto() {
         event.preventDefault();
 
         // Vérifie si le bouton a la couleur de fond spécifiée
-        if (btnValidate.style.backgroundColor  === "rgb(29, 97, 84)") {
+        if (btnValidate.style.backgroundColor === "rgb(29, 97, 84)") {
 
             // Obtient l'index de l'option sélectionnée dans le <select>
             const selectedIndex = select.selectedIndex;
