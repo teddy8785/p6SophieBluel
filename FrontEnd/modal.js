@@ -2,29 +2,36 @@ let token = sessionStorage.getItem('authToken');
 
 // Fonction pour créer et afficher le modal de la galerie
 export function modal(works) {
+
     // Créer la structure du modal
     const modal = document.createElement("div");
+    modal.id = "modalDeletePhoto";
     modal.classList.add("modal");
 
+    // conteneur de la modale
     const modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
 
+    // titre
     const titre = document.createElement("h1");
-    const gallerie = document.createElement("div");
-    const line = document.createElement("hr");
-    const button = document.createElement("button");
-    const closeButton = document.createElement("i");
-
-    // Définir le contenu
     titre.textContent = "Galerie photo";
     titre.classList.add("title");
 
+    // la gallerie photo
+    const gallerie = document.createElement("div");
     gallerie.classList.add("galleryModal");
 
+    // la ligne de separation
+    const line = document.createElement("hr");
     line.classList.add("line");
 
+    // le bouton "ajout de photo"
+    const button = document.createElement("button");
     button.textContent = "Ajouter une photo";
     button.classList.add("button");
+
+    // le bouton de fermeture
+    const closeButton = document.createElement("i");
     closeButton.classList.add("modal-close", "fa-solid", "fa-xmark");
 
     // Ajouter les éléments au modal
@@ -59,13 +66,12 @@ function genererPhotoDansModal(gallerie, works) {
     works.forEach(work => {
         // Créer les éléments figure et img
         const portfolioElement = document.createElement("figure");
+
         const photoElement = document.createElement("img");
         photoElement.src = work.imageUrl;
-
-        // Ajouter les classes pour le style
         portfolioElement.classList.add("figureContainer");
 
-        // Ajouter l'icône de la corbeille
+        // l'icône de la corbeille
         const trash = document.createElement("i");
         trash.classList.add("fa-solid", "fa-trash-can");
 
@@ -74,7 +80,7 @@ function genererPhotoDansModal(gallerie, works) {
         portfolioElement.appendChild(trash);
         gallerie.appendChild(portfolioElement);
 
-        // Ajouter un événement pour manipuler l'image lorsqu'on clique sur l'icône de la corbeille
+        // evenement pour manipuler l'image lorsqu'on clique sur l'icône de la corbeille
         trash.addEventListener("click", async (event) => {
             event.stopPropagation(); // Empêcher la propagation de l'événement si nécessaire
 
@@ -111,63 +117,77 @@ function genererPhotoDansModal(gallerie, works) {
 
 // Fonction pour créer et afficher le modal d'ajout de photo
 export function modal2(works) {
+
     // Créer la structure du modal
     const modal = document.createElement("div");
+    modal.id = "modalAddPhoto";
     modal.classList.add("modal");
 
+    // conteneur de la modale 2
     const modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
 
+    // bouton de retour
     const returnButton = document.createElement("i");
-    const closeButton = document.createElement("i");
-    const title = document.createElement("h1");
-    const ajoutPhoto = document.createElement("div");
-    const formContainer = document.createElement("form");
-    const label1 = document.createElement("label");
-    const labelContainer1 = document.createElement("input");
-    const label2 = document.createElement("label");
-    const labelContainer2 = document.createElement("select");
-
-    const line = document.createElement("hr");
-    const button = document.createElement("button");
-    const image = document.createElement("i");
-    const button2 = document.createElement("button");
-    const fileSize = document.createElement("p");
-
-    // Définir le contenu
-    formContainer.classList.add("formContainer");
-
     returnButton.classList.add("modal-return", "fa-solid", "fa-arrow-left");
+
+    // bouton de fermeture des modales
+    const closeButton = document.createElement("i");
     closeButton.classList.add("modal-close", "fa-solid", "fa-xmark");
 
+    // le titre
+    const title = document.createElement("h1");
     title.textContent = "Ajout photo";
     title.classList.add("title");
 
-    ajoutPhoto.classList.add("ajoutPhoto");
+    // conteneur photo
+    const photoContainer = document.createElement("div");
+    photoContainer.classList.add("photoContainer");
 
+    // icone de photo manquante
+    const image = document.createElement("i");
     image.classList.add("fa-regular", "fa-image", "image");
 
-    button2.textContent = "+ Ajouter photo";
-    button2.classList.add("button2");
-    button2.id = "button2";
-
+    // information des fichiers acceptés
+    const fileSize = document.createElement("p");
     fileSize.textContent = "jpg,png : 4mo max";
     fileSize.style.fontSize = "12px";
     fileSize.id = "info";
 
+    // conteneur formulaire
+    const formContainer = document.createElement("form");
+    formContainer.classList.add("formContainer");
 
-    label1.textContent = "Titre";
-    labelContainer1.classList.add("input");
-    labelContainer1.id = "labelContainer1";
+    // titre de l'input "titre"
+    const TitleLabel = document.createElement("label");
+    TitleLabel.textContent = "Titre";
 
+    // l'input "titre"
+    const titleInput = document.createElement("input");
+    titleInput.classList.add("input");
+    titleInput.id = "titleInput";
 
+    // titre de l'input "categorie"
+    const categoryLabel = document.createElement("label");
+    categoryLabel.textContent = "Categorie";
 
-    label2.textContent = "Categorie";
-    labelContainer2.classList.add("input");
-    labelContainer2.id = "labelContainer2";
+    // le selecteur de categories
+    const categorySelecter = document.createElement("select");
+    categorySelecter.classList.add("input");
+    categorySelecter.id = "categorySelecter";
 
+    // bouton pour ajouter une photo
+    const buttonPhoto = document.createElement("button");
+    buttonPhoto.textContent = "+ Ajouter photo";
+    buttonPhoto.classList.add("buttonPhoto");
+    buttonPhoto.id = "buttonPhoto";
+
+    // la ligne de separation
+    const line = document.createElement("hr");
     line.classList.add("line");
 
+    // le bouton de validation du formulaire
+    const button = document.createElement("button");
     button.textContent = "Valider";
     button.classList.add("button", "btnValidate");
     button.id = "button";
@@ -177,30 +197,30 @@ export function modal2(works) {
     modalContent.appendChild(returnButton);
     modalContent.appendChild(closeButton);
     modalContent.appendChild(title);
-    modalContent.appendChild(ajoutPhoto);
+    modalContent.appendChild(photoContainer);
     modalContent.appendChild(formContainer);
-    formContainer.appendChild(label1);
-    formContainer.appendChild(labelContainer1);
-    formContainer.appendChild(label2);
-    formContainer.appendChild(labelContainer2);
+    formContainer.appendChild(TitleLabel);
+    formContainer.appendChild(titleInput);
+    formContainer.appendChild(categoryLabel);
+    formContainer.appendChild(categorySelecter);
     formContainer.appendChild(line);
     formContainer.appendChild(button);
-    ajoutPhoto.appendChild(image);
-    ajoutPhoto.appendChild(button2);
-    ajoutPhoto.appendChild(fileSize);
+    photoContainer.appendChild(image);
+    photoContainer.appendChild(buttonPhoto);
+    photoContainer.appendChild(fileSize);
 
     // Récupère toutes les catégories uniques
     const categories = ["", ...new Set(works.map(work => work.category.name))];
 
     // Vider les options existantes dans le <select>
-    labelContainer2.innerHTML = "";
+    categorySelecter.innerHTML = "";
 
     // Boucle pour créer et ajouter des balises <option> pour chaque catégorie
     categories.forEach((categorie) => {
         const option = document.createElement('option');
         option.textContent = categorie; // Texte affiché de l'option
         option.value = categorie; // Valeur de l'option
-        labelContainer2.appendChild(option); // Ajouter l'option au <select>
+        categorySelecter.appendChild(option); // Ajouter l'option au <select>
     });
 
     // Ajouter le modal au body de la page
@@ -209,10 +229,20 @@ export function modal2(works) {
     ajouterPhoto();
 
     // changer la couleur du bouton si le champs est rempli
-    formContainer.addEventListener("input", (event) => {
-        console.log(event.target)
-        if ( button2.isConnected === false) {// 
-           validateForm();
+    formContainer.addEventListener("input", () => {
+
+        if (!buttonPhoto.isConnected) {
+            validateForm();
+        }
+    });
+
+    // validation de la création de la photo si les elements sont tous remplis
+    button.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (button.style.backgroundColor !== "grey" && !buttonPhoto.isConnected) {
+            validerPhoto();
+        } else {
+            alert("Veuillez remplir tous les champs !!!");
         }
     });
 
@@ -233,7 +263,7 @@ export function modal2(works) {
 }
 
 function ajouterPhoto() {
-    const btnAddPhoto = document.querySelector(".button2");
+    const btnAddPhoto = document.getElementById("buttonPhoto");
     const emplacementPhoto = document.querySelector(".image");
     const info = document.getElementById("info");
     const photoElement = document.createElement("img");
@@ -265,7 +295,11 @@ function ajouterPhoto() {
             const maxFileSizeMB = 4; // Taille maximale en Mo
             if (fileSizeInMB > maxFileSizeMB) {
                 alert("Le fichier est trop volumineux");
-            } else {
+            } 
+            else if (file.type !== "image/png" && file.type !== "image/jpg") {
+                alert("veuillez choisir un fichier .jpg ou  .png");
+            }
+            else {
                 // Utiliser FileReader pour lire l'image et la montrer dans le modal
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -280,23 +314,24 @@ function ajouterPhoto() {
                 validateForm();
                 validerPhoto();
             }
-        } else {
-            alert("Aucun fichier sélectionné");
         }
     });
 }
 
+// fonction de validation du formulaire
 function validateForm() {
-    const labelContainer1 = document.getElementById("labelContainer1");
-    const labelContainer2 = document.getElementById("labelContainer2");
+    const titleInput = document.getElementById("titleInput");
+    const categorySelecter = document.getElementById("categorySelecter");
     const button = document.getElementById("button");
 
-    if (labelContainer1.value != "" && labelContainer2.value !== "") {
+    if (titleInput.value != "" && categorySelecter.value !== "") {
         button.style.backgroundColor = "#1D6154";
     } else {
         button.style.backgroundColor = "grey";
     }
 }
+
+// fonction de validation de la photo
 function validerPhoto() {
     const btnValidate = document.querySelector(".btnValidate");
     const fileInput = document.getElementById("fileInput");
@@ -340,8 +375,6 @@ function validerPhoto() {
                 console.error('Erreur:', error);
                 alert('Erreur lors de la soumission du formulaire.');
             }
-        } else {
-            alert("Veuillez remplir tous les champs !");
         }
     });
 }

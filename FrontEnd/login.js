@@ -28,7 +28,6 @@ export function connexionLogin() {
         };
         // Sérialisation de l'objet en chaîne JSON
         const chargeUtile = JSON.stringify(loginUser);
-        const password = document.getElementById("password");
         
         // Envoi de la requête de connexion
         const response = await fetch("http://localhost:5678/api/users/login", {
@@ -54,19 +53,21 @@ export function connexionLogin() {
 // Appel initial de connexionLogin pour écouter les soumissions de formulaire
 connexionLogin();
 
+// fonction de gestion des erreur dans l'adresse email
 function validEmail() {
     const email = document.getElementById("email");
     const msgError = document.getElementById("msgErrorMail");
 
     if(email.value != "sophie.bluel@test.tld") {
         email.style.border = "1px solid red";
-        msgError.textContent = "Veuillez entrer le bon mail !!!!!";
+        msgError.textContent = "Adresse email incorrect !!!!!";
         email.value = "";
     }else{
         email.style.border = "none";
     }
 }
 
+// fonction de gestion des erreur dans le mot de passe
 function validPassword() {
    
     const password = document.getElementById("password");
@@ -74,7 +75,7 @@ function validPassword() {
 
     if(password.value != "S0phie") {
         password.style.border = "1px solid red";
-        msgError.textContent = "Veuillez entrer le bon password !!!!!";
+        msgError.textContent = "Mot de passe incorrect !!!!!";
         password.value = "";
     }else{
         password.style.border = "none";

@@ -529,7 +529,7 @@ footer nav ul {
 	cursor: pointer;
 }
 
-.ajoutPhoto {
+.photoContainer {
 	display: flex;
 	width: 100%;
 	height: 35%;
@@ -555,7 +555,7 @@ footer nav ul {
 	gap: 25px;
 }
 
-.button2 {
+.buttonPhoto {
 	border-radius: 25px 25px;
 	padding: 5px;
 	width: 190px;
