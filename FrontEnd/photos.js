@@ -1,4 +1,5 @@
-import { modal } from "./modal.js";
+import { modalDeletePhoto } from "./modal.js";
+import { modalAddPhoto } from "./modal.js";
 
 let works = [];
 
@@ -112,6 +113,6 @@ export function pageEdition() {
     login.textContent = "logout";
 
     container.addEventListener("click", () => {
-        modal(works);
+        modalDeletePhoto(works);
     });
 }

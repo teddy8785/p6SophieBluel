@@ -1,7 +1,7 @@
 let token = sessionStorage.getItem('authToken');
 
 // Fonction pour créer et afficher le modal de la galerie
-export function modal(works) {
+export function modalDeletePhoto(works) {
 
     // Créer la structure du modal
     const modal = document.createElement("div");
@@ -55,7 +55,7 @@ export function modal(works) {
 
     // Ajouter un événement pour ouvrir le modal d'ajout de photo
     button.addEventListener("click", () => {
-        modal2(works); // Passer les `works` au modal2 pour les options de catégorie
+        modalAddPhoto(works); // Passer les `works` au modal2 pour les options de catégorie
     });
 }
 
@@ -97,8 +97,9 @@ function genererPhotoDansModal(gallerie, works) {
                         }
                     });
 
-                    if (!response.ok) {
-                        throw new Error('La connexion a échoué');
+                    if (response.ok) {
+                        figure.remove();
+                        event.preventDefault();
                     }
 
                     console.log("Réponse du serveur:", response);
@@ -107,16 +108,14 @@ function genererPhotoDansModal(gallerie, works) {
                     console.error('Erreur:', error);
                     alert('Erreur lors de la soumission du formulaire.');
                 }
-            } else {
-                alert("Veuillez remplir tous les champs !");
             }
-            figure.remove();
+            
         });
     });
 }
 
 // Fonction pour créer et afficher le modal d'ajout de photo
-export function modal2(works) {
+export function modalAddPhoto(works) {
 
     // Créer la structure du modal
     const modal = document.createElement("div");
