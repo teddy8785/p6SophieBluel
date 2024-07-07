@@ -1,5 +1,4 @@
 import { modalDeletePhoto } from "./modal.js";
-import { modalAddPhoto } from "./modal.js";
 
 let works = [];
 
@@ -14,9 +13,10 @@ fetch("http://localhost:5678/api/works")
 export function genererPhoto(works) {
     const sectionPortfolio = document.querySelector(".gallery");
     sectionPortfolio.innerHTML = "";
-
+    
     works.forEach(work => {
         const portfolioElement = document.createElement("figure");
+        portfolioElement.id = `${work.id}`;
         const photoElement = document.createElement("img");
         photoElement.src = work.imageUrl;
         const textElement = document.createElement("figcaption");
@@ -26,6 +26,7 @@ export function genererPhoto(works) {
         portfolioElement.appendChild(textElement);
         sectionPortfolio.appendChild(portfolioElement);
     });
+    
 }
 
 const boutonArray = [];
@@ -82,6 +83,28 @@ login.addEventListener("click", () => {
     }
 });
 
+// Fonction pour charger les données `works` depuis l'API
+async function loadWorks() {
+    try {
+      const response = await fetch('http://localhost:5678/api/works', {
+        headers: {
+          Authorization: `Bearer ${token}`, // Remplacer par votre token ou méthode d'authentification
+        }
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        return data; // Retourne les données `works`
+      } else {
+        throw new Error("Erreur lors du chargement des données.");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Erreur lors du chargement des données. Veuillez réessayer.");
+      return []; // Retourne un tableau vide en cas d'erreur
+    }
+  }
+  
 export function pageEdition() {
     const pageModifier = document.getElementById("projects");
 
@@ -112,7 +135,10 @@ export function pageEdition() {
 
     login.textContent = "logout";
 
-    container.addEventListener("click", () => {
-        modalDeletePhoto(works);
-    });
+      // Ajouter un écouteur d'événement au conteneur pour ouvrir le modal d'édition
+  container.addEventListener("click", async () => {
+    // Recharger les données `works` avant d'ouvrir le modal
+    works = await loadWorks(); // Charge les dernières données de `works`
+    modalDeletePhoto(works); // Passe les données `works` à la fonction de la modal
+  });
 }
