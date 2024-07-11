@@ -3,8 +3,6 @@ let token = sessionStorage.getItem("authToken");
 // Fonction pour créer et afficher le modal de la galerie
 export function modalDeletePhoto(works) {
 
-  console.log("Type de works:", typeof works);
-  console.log("Contenu de works:", works);
   // Créer la structure du modal
   const modal = document.createElement("div");
   modal.id = "modalDeletePhoto";
@@ -66,11 +64,12 @@ function genererPhotoDansModal(gallerie, works) {
   gallerie.innerHTML = ""; // Vider la galerie
 
   works.forEach((work) => {
-    // Créer les éléments figure et img
+    // Créer les éléments figure, img et id relié a l'id de la photo dans L'api
     const portfolioElement = document.createElement("figure");
     portfolioElement.classList.add("figureContainer");
     portfolioElement.id = `${work.id}`;
 
+    // balise img avec la source de la photo
     const photoElement = document.createElement("img");
     photoElement.src = work.imageUrl;
 
@@ -105,7 +104,7 @@ function genererPhotoDansModal(gallerie, works) {
               },
             }
           );
-
+// condition pour supprimer la photo du dom et de la modale
           if (response.ok && elementDelete) {
             figure.remove();
             elementDelete.remove();
@@ -418,63 +417,58 @@ function addProjectToGallery(work) {
 }
 
 function addProjectToModal(work) {
-  // Select the gallery modal container
+  
   const gallerie = document.querySelector(".galleryModal");
 
-  // Create a figure element to contain the project
   const portfolioElement = document.createElement("figure");
   portfolioElement.classList.add("figureContainer");
-  portfolioElement.id = `${work.id}`; // Assumer que project.id est l'ID unique du nouveau projet
+  portfolioElement.id = `${work.id}`;
 
-  // Create an img element for the project image and set its source
   const photoElement = document.createElement("img");
   photoElement.src = work.imageUrl;
 
-  // Create an icon element for the trash can
   const trash = document.createElement("i");
   trash.classList.add("fa-solid", "fa-trash-can");
 
-  // Append the img and trash icon to the figure element
   portfolioElement.appendChild(photoElement);
   portfolioElement.appendChild(trash);
 
-  // Append the figure element to the gallery modal container
   gallerie.appendChild(portfolioElement);
 
-  // evenement pour manipuler l'image lorsqu'on clique sur l'icône de la corbeille
-  trash.addEventListener("click", async (event) => {
-    event.stopPropagation(); // Empêcher la propagation de l'événement si nécessaire
-    event.preventDefault();
+    // evenement pour manipuler l'image lorsqu'on clique sur l'icône de la corbeille
+    trash.addEventListener("click", async (event) => {
+      event.stopPropagation(); // Empêcher la propagation de l'événement si nécessaire
+      event.preventDefault();
 
-    // Supprimer l'élément figure parent de l'icône de la corbeille cliquée
-    const figure = trash.closest("figure");
-    const id = work.id;
-    // Supprimer l'élément du DOM
-    const elementDelete = document.getElementById(`${id}`);
+      // Supprimer l'élément figure parent de l'icône de la corbeille cliquée
+      const figure = trash.closest("figure");
+      const id = work.id;
+      // Supprimer l'élément du DOM
+      const elementDelete = document.getElementById(`${id}`);
 
-    if (figure) {
-      try {
-        const response = await fetch(
-          `http://localhost:5678/api/works/${id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+      if (figure) {
+        try {
+          const response = await fetch(
+            `http://localhost:5678/api/works/${id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+// condition pour supprimer la photo du dom et de la modale
+          if (response.ok && elementDelete) {
+            figure.remove();
+            elementDelete.remove();
+          } else {
+            throw new Error("erreur lors de la suppression de l'image");
           }
-        );
 
-        if (response.ok && elementDelete) {
-          figure.remove();
-          elementDelete.remove();
-        } else {
-          throw new Error("erreur lors de la suppression de l'image");
+        } catch (error) {
+          console.error("Erreur:", error);
+          alert("Erreur lors de la soumission du formulaire.");
         }
-
-      } catch (error) {
-        console.error("Erreur:", error);
-        alert("Erreur lors de la soumission du formulaire.");
       }
-    }
-  });
+    });
 }

@@ -6,17 +6,12 @@ export function connexionLogin() {
   content.height = "30px";
   content.width = "100px";
 
-  const msgErrorMail = document.createElement("p");
-  msgErrorMail.id = "msgErrorMail";
-  msgErrorMail.textContent = "";
-
-  const msgErrorPassword = document.createElement("p");
-  msgErrorPassword.id = "msgErrorPassword";
-  msgErrorPassword.textContent = "";
+  const msgError = document.createElement("p");
+  msgError.id = "msgError";
+  msgError.textContent = "";
 
   formulaire.appendChild(content);
-  content.appendChild(msgErrorMail);
-  content.appendChild(msgErrorPassword);
+  content.appendChild(msgError);
 
   formulaire.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -26,6 +21,7 @@ export function connexionLogin() {
       email: event.target.querySelector("[name=email]").value,
       password: event.target.querySelector("[name=password]").value,
     };
+  
     // Sérialisation de l'objet en chaîne JSON
     // Préparation de la charge utile à envoyer
     const chargeUtile = JSON.stringify({
@@ -52,12 +48,10 @@ export function connexionLogin() {
           // Redirection vers la page d'accueil après la connexion
           window.location.href = "./index.html";
         } else {
-          afficherErreur("Token d'authentification manquant");
+          afficherErreur();
         }
-      } else if (response.status === 401) {
-        afficherErreur("Identifiants incorrects");
       } else {
-        afficherErreur("Erreur lors de la connexion : " + response.statusText);
+        afficherErreur();
       }
     } catch (error) {
       // Gestion des erreurs de réseau ou autres exceptions
@@ -71,7 +65,7 @@ connexionLogin();
 
 // Fonction pour afficher les messages d'erreur
 function afficherErreur() {
-    const msgError = document.getElementById("msgErrorMail");
+    const msgError = document.getElementById("msgError");
     msgError.style.color = "red";
 
     msgError.textContent = "Email ou Mot de passe   incorrect !!!!!";
