@@ -21,7 +21,7 @@ export function connexionLogin() {
       email: event.target.querySelector("[name=email]").value,
       password: event.target.querySelector("[name=password]").value,
     };
-  
+
     // Sérialisation de l'objet en chaîne JSON
     // Préparation de la charge utile à envoyer
     const chargeUtile = JSON.stringify({
@@ -48,16 +48,17 @@ export function connexionLogin() {
           // Redirection vers la page d'accueil après la connexion
           window.location.href = "./index.html";
         } else {
-          afficherErreur();
+          afficherErreurToken();
         }
       } else {
         afficherErreur();
       }
     } catch (error) {
       // Gestion des erreurs de réseau ou autres exceptions
-      afficherErreur();
+      afficherErreurReseau();
     }
   });
+
 }
 
 // Appel initial de connexionLogin pour écouter les soumissions de formulaire
@@ -65,8 +66,20 @@ connexionLogin();
 
 // Fonction pour afficher les messages d'erreur
 function afficherErreur() {
-    const msgError = document.getElementById("msgError");
-    msgError.style.color = "red";
 
-    msgError.textContent = "Email ou Mot de passe   incorrect !!!!!";
+  const msgError = document.getElementById("msgError");
+  msgError.style.color = "red";
+  msgError.textContent = "Email ou Mot de passe incorrect !!!!!";
+}
+
+function afficherErreurToken() {
+  const msgError = document.getElementById("msgError");
+  msgError.style.color = "red";
+  msgError.textContent = "Erreur dans l'obtention du token !!!!!";
+}
+
+function afficherErreurReseau() {
+  const msgError = document.getElementById("msgError");
+  msgError.style.color = "red";
+  msgError.textContent = "Erreur de réseau ou serveur !!!!!";
 }

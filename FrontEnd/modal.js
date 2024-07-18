@@ -104,7 +104,7 @@ function genererPhotoDansModal(gallerie, works) {
               },
             }
           );
-// condition pour supprimer la photo du dom et de la modale
+          // condition pour supprimer la photo du dom et de la modale
           if (response.ok && elementDelete) {
             figure.remove();
             elementDelete.remove();
@@ -391,7 +391,7 @@ function validerPhoto() {
 }
 
 function addProjectToGallery(work) {
-  
+
   // Sélectionner la galerie où ajouter le nouveau projet
   const gallery = document.querySelector(".gallery");
 
@@ -417,7 +417,7 @@ function addProjectToGallery(work) {
 }
 
 function addProjectToModal(work) {
-  
+
   const gallerie = document.querySelector(".galleryModal");
 
   const portfolioElement = document.createElement("figure");
@@ -435,40 +435,40 @@ function addProjectToModal(work) {
 
   gallerie.appendChild(portfolioElement);
 
-    // evenement pour manipuler l'image lorsqu'on clique sur l'icône de la corbeille
-    trash.addEventListener("click", async (event) => {
-      event.stopPropagation(); // Empêcher la propagation de l'événement si nécessaire
-      event.preventDefault();
+  // evenement pour manipuler l'image lorsqu'on clique sur l'icône de la corbeille
+  trash.addEventListener("click", async (event) => {
+    event.stopPropagation(); // Empêcher la propagation de l'événement si nécessaire
+    event.preventDefault();
 
-      // Supprimer l'élément figure parent de l'icône de la corbeille cliquée
-      const figure = trash.closest("figure");
-      const id = work.id;
-      // Supprimer l'élément du DOM
-      const elementDelete = document.getElementById(`${id}`);
+    // Supprimer l'élément figure parent de l'icône de la corbeille cliquée
+    const figure = trash.closest("figure");
+    const id = work.id;
+    // Supprimer l'élément du DOM
+    const elementDelete = document.getElementById(`${id}`);
 
-      if (figure) {
-        try {
-          const response = await fetch(
-            `http://localhost:5678/api/works/${id}`,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-// condition pour supprimer la photo du dom et de la modale
-          if (response.ok && elementDelete) {
-            figure.remove();
-            elementDelete.remove();
-          } else {
-            throw new Error("erreur lors de la suppression de l'image");
+    if (figure) {
+      try {
+        const response = await fetch(
+          `http://localhost:5678/api/works/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-
-        } catch (error) {
-          console.error("Erreur:", error);
-          alert("Erreur lors de la soumission du formulaire.");
+        );
+        // condition pour supprimer la photo du dom et de la modale
+        if (response.ok && elementDelete) {
+          figure.remove();
+          elementDelete.remove();
+        } else {
+          throw new Error("erreur lors de la suppression de l'image");
         }
+
+      } catch (error) {
+        console.error("Erreur:", error);
+        alert("Erreur lors de la soumission du formulaire.");
       }
-    });
+    }
+  });
 }
